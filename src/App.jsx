@@ -5,6 +5,7 @@ import StudentsPage from "./pages/StudentsPage"
 import { useState } from "react"
 import NotFoundPage from "./pages/NotFoundPage"
 import { TOKEN } from "./constants"
+import AdminLayout from "./layout/AdminLayout"
 
 function App() {
 
@@ -18,9 +19,9 @@ function App() {
 
         {
         islogin ?
-         <Route >
-         <Route path="/teachers" element={<TeachersPage />} />
-         <Route path="/students" element={<StudentsPage />} />
+         <Route  element={<AdminLayout/>}>
+         <Route path="teachers" element={<TeachersPage />} />
+         <Route path="students" element={<StudentsPage />} />
        </Route>
        :
        null

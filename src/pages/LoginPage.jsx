@@ -1,12 +1,12 @@
-// src/pages/LoginPage.js
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import loginSchema from '../schemas/LoginSchema';
 import axios from 'axios';
 import { TOKEN } from '../constants';
-
+import PropTypes from "prop-types";
 const LoginPage = ({setIsLogin}) => {
+
   let navigate = useNavigate();
 
   const formik = useFormik({
@@ -89,4 +89,7 @@ const LoginPage = ({setIsLogin}) => {
   );
 };
 
+LoginPage.propTypes={
+  setIsLogin:PropTypes.func
+}
 export default LoginPage;
