@@ -95,7 +95,14 @@ const TeachersPage = () => {
         <Space size="middle">
           <Button type="primary" onClick={() => editTeacher(id)}>Edit</Button>
           <Button type="primary" onClick={() => deleteTeacher(id)} danger>Delete</Button>
-          <Link to={`/teacher/${id}/student`}>See students</Link>
+          <Link to={`/teacher/${id}/student`} style={{
+          backgroundColor: '#faad14',
+          color: '#fff',
+          padding: '6px 16px',
+          borderRadius: '4px',
+          textDecoration: 'none',
+          display: 'inline-block'
+        }}> See students</Link>
         </Space>
       ),
     },

@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import request from "../server";
 import { useParams } from "react-router-dom";
-import { Button, Image, Modal, Space, Table, Checkbox, Form, Input } from 'antd';
+import { Button, Image, Modal, Space, Table, Checkbox, Form, Input, Select } from 'antd';
 import { useForm } from "antd/es/form/Form";
 
 const StudentsPage = () => {
@@ -9,31 +9,47 @@ const StudentsPage = () => {
   const [form] = useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [students, setStudents] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [selected, setSelected] = useState(null);
+  const [selectedTeacherId, setSelectedTeacherId] = useState(id);
+  const [selectedStudentId, setSelectedStudentId] = useState(null);
 
   useEffect(() => {
-    getStudents();
-  }, [id]);
+    fetchTeachers();
+    if (selectedTeacherId) {
+      getStudents();
+    }
+  }, [selectedTeacherId]);
+
+  const fetchTeachers = async () => {
+    try {
+      const { data } = await request.get('teacher');
+      setTeachers(data.map((teacher) => ({ id: teacher.id, name: `${teacher.firstName} ${teacher.lastName}` })));
+    } catch (error) {
+      console.error('Error fetching teachers:', error);
+    }
+  };
 
   const getStudents = async () => {
     try {
       setLoading(true);
-      const { data } = await request.get(`/teacher/${id}/student`);
+      const { data } = await request.get(`/teacher/${selectedTeacherId}/student`);
       setStudents(data.map((student, index) => ({ ...student, key: index })));
     } catch (error) {
-      setError(error);
       console.error('Error fetching students:', error);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleTeacherChange = (teacherId) => {
+    setSelectedTeacherId(teacherId);
+  };
+
   const editStudent = async (studentId) => {
     try {
-      setSelected(studentId);
-      const { data } = await request.get(`/teacher/${id}/student/${studentId}`);
+      setSelectedStudentId(studentId);
+      const { data } = await request.get(`/teacher/${selectedTeacherId}/student/${studentId}`);
       form.setFieldsValue(data);
       setIsModalOpen(true);
     } catch (err) {
@@ -43,17 +59,17 @@ const StudentsPage = () => {
 
   const deleteStudent = (studentId) => {
     Modal.confirm({
-      title: 'Do you want to delete ?',
+      title: 'Do you want to delete?',
       onOk: async () => {
         try {
-          await request.delete(`/teacher/${id}/student/${studentId}`);
+          await request.delete(`/teacher/${selectedTeacherId}/student/${studentId}`);
           getStudents();
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       }
     });
-  }
+  };
 
   const columns = [
     {
@@ -97,7 +113,7 @@ const StudentsPage = () => {
   ];
 
   const showModal = () => {
-    setSelected(null);
+    setSelectedStudentId(null);
     setIsModalOpen(true);
     form.resetFields();
   };
@@ -105,10 +121,10 @@ const StudentsPage = () => {
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
-      if (selected === null) {
-        await request.post(`/teacher/${id}/student`, values);
+      if (selectedStudentId === null) {
+        await request.post(`/teacher/${selectedTeacherId}/student`, values);
       } else {
-        await request.put(`/teacher/${id}/student/${selected}`, values);
+        await request.put(`/teacher/${selectedTeacherId}/student/${selectedStudentId}`, values);
       }
       getStudents();
       setIsModalOpen(false);
@@ -123,13 +139,25 @@ const StudentsPage = () => {
 
   return (
     <Fragment>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <h1>Students ({students.length})</h1>
+        <div>
+          <Select
+            style={{ width: 200 }}
+            value={selectedTeacherId}
+            onChange={handleTeacherChange}
+            placeholder="Select a teacher"
+          >
+            {teachers.map(teacher => (
+              <Select.Option key={teacher.id} value={teacher.id}>
+                {teacher.name}
+              </Select.Option>
+            ))}
+          </Select>
+          <Button style={{marginLeft:"15px"}} type="dashed" onClick={showModal}>Add Student</Button>
+        </div>
+      </div>
       <Table
-        title={() => (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <h1>Students ({students.length})</h1>
-            <Button type="dashed" onClick={showModal}>Add Student</Button>
-          </div>
-        )}
         loading={loading}
         dataSource={students}
         columns={columns}
@@ -150,7 +178,7 @@ const StudentsPage = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="Image url"
+            label="Image URL"
             name="avatar"
             rules={[{ required: true, message: 'Please input the image URL!' }]}
           >
