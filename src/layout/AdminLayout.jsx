@@ -1,7 +1,5 @@
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import {
-
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   LogoutOutlined,
@@ -9,58 +7,65 @@ import {
 } from '@ant-design/icons';
 import { Button, Layout, Menu, Modal, theme } from 'antd';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-
-import "./AdminLayout.css"
+import "./AdminLayout.css";
 import { TOKEN } from '../constants';
-
 import PropTypes from "prop-types";
 
 const { Header, Sider, Content } = Layout;
 
-const AdminLayout = ({setIsLogin}) => {
-  const navigate=useNavigate();
-  let location=useLocation();
-
+const AdminLayout = ({ setIsLogin }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const [selectedKeys, setSelectedKeys] = useState([location.pathname]);
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   const logout = () => {
     Modal.confirm({
-      title: 'Do you want to exit ?',
-      onOk:()=>{
-       navigate('/login');
-       localStorage.removeItem(TOKEN);
-       setIsLogin(false);
-      }
+      title: 'Do you want to exit?',
+      onOk: () => {
+        navigate('/login');
+        localStorage.removeItem(TOKEN);
+        setIsLogin(false);
+      },
     });
-  }
+  };
+
+  useEffect(() => {
+    setSelectedKeys([location.pathname]);
+  }, [location.pathname]);
+
   return (
     <Layout>
       <Sider
         className='admin-sider'
-        trigger={null} collapsible collapsed={collapsed}>
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+      >
         <div className='admin-logo'>{collapsed ? "LMC" : "Admin panel"}</div>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={location.pathname}
+          selectedKeys={selectedKeys}
           items={[
             {
               key: '/teachers',
               icon: <UsergroupAddOutlined />,
-              label: <Link to={'/teachers'}>Teachers</Link>,
+              label: <Link to='/teachers'>Teachers</Link>,
             },
             {
-              key: '/students',
+              key: '/teacher/:id/student',
               icon: <UsergroupAddOutlined />,
-              label: <Link to={'/students'}>Students</Link>,
+              label: <Link to='/teacher/:id/student'>Students</Link>,
             },
             {
-              key: '3',
+              key: 'logout',
               icon: <LogoutOutlined />,
-              label: <Button type='primary' danger onClick={logout} >Logout</Button>,
+              label: <Button type='primary' danger onClick={logout}>Logout</Button>,
             },
           ]}
         />
@@ -98,7 +103,9 @@ const AdminLayout = ({setIsLogin}) => {
     </Layout>
   );
 };
-AdminLayout.propTypes={
-  setIsLogin:PropTypes.func,
-}
+
+AdminLayout.propTypes = {
+  setIsLogin: PropTypes.func.isRequired,
+};
+
 export default AdminLayout;

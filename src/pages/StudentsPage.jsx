@@ -1,11 +1,197 @@
+import { Fragment, useEffect, useState } from "react";
+import request from "../server";
+import { useParams } from "react-router-dom";
+import { Button, Image, Modal, Space, Table, Checkbox, Form, Input } from 'antd';
+import { useForm } from "antd/es/form/Form";
 
- const StudentsPage = () => {
-   return (
-     <div>
-      <h1>StudentsPage</h1>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Id corporis quibusdam, rem quidem ad alias voluptates labore consequuntur numquam dolores magni eius iste, distinctio in accusamus aliquid tempora, libero illum deserunt dicta. Amet minus quasi autem consequatur, molestias debitis porro eveniet consequuntur numquam repellat harum obcaecati totam. Magnam ex nam numquam accusantium laudantium sunt! Ullam ab, ea quis labore perferendis voluptas ratione rem omnis enim in magnam voluptates veniam id rerum eligendi ipsum pariatur quaerat porro ad? Ut ratione voluptas dicta sit beatae omnis iure, iusto quod dignissimos distinctio saepe eos alias possimus excepturi corrupti soluta delectus itaque neque esse animi repellendus accusantium iste eveniet odit. Harum alias reiciendis, quod, et quos maxime expedita commodi magni voluptates quo eaque odio temporibus mollitia quaerat! Quisquam veniam tenetur porro nisi error accusamus mollitia illum voluptas quod quas non quo dolorum dignissimos facere, iste repudiandae exercitationem, reprehenderit distinctio maxime et nam modi obcaecati? Harum doloribus sequi perspiciatis quibusdam voluptatibus adipisci dolorum quos eveniet incidunt deserunt! Numquam eaque aliquam earum reprehenderit animi ab dolore quam cupiditate alias eveniet nihil perspiciatis, voluptates aperiam libero? Ratione, quo ut adipisci ipsum nihil laboriosam provident ullam recusandae eveniet fugit natus vel quod enim molestiae iusto, libero consequatur sit ab atque! Perspiciatis eaque voluptas quibusdam iusto. Beatae, sequi eaque ipsum, sed dolorem aliquam alias, quibusdam voluptas accusantium in est corporis eum! Quidem quisquam sed dolores asperiores ducimus laboriosam eius nobis nostrum qui tempora omnis sint dicta repudiandae, magni expedita voluptate fugit, architecto exercitationem assumenda veniam. Facilis natus accusantium adipisci vel deleniti asperiores. Id dolorem illo aliquid harum nihil velit eaque vitae sed esse soluta blanditiis natus veritatis, numquam excepturi dicta, animi totam! Esse accusamus asperiores corporis magnam a perferendis maiores dolore aperiam at et aut, laborum delectus doloribus, accusantium, dolorem dignissimos neque dolor sed quod cupiditate soluta illo? Minima culpa, ratione, tempora, totam adipisci quasi modi aliquid repellendus accusamus omnis vero laborum ut repellat. Facilis suscipit dicta incidunt possimus quae soluta vero aliquam. Cumque impedit cum harum doloribus nam accusantium quasi in, voluptatum earum, tempora ab dignissimos nihil sed? Cupiditate vitae tenetur praesentium officia molestias veritatis sequi fugit laboriosam non, quia ratione aliquid quisquam perferendis id quam quidem, doloremque distinctio ipsam inventore. Sint praesentium dolorem voluptates, neque voluptate sapiente possimus natus nulla vitae, ea voluptatem illum quos rerum. Error nam optio dolorum dolores non, saepe distinctio eos neque cumque quaerat facilis numquam voluptatem fugit repudiandae totam reprehenderit deserunt, quam aliquid modi. Ut incidunt beatae tenetur vitae, facere soluta doloribus laborum veritatis tempore exercitationem quidem facilis illo quisquam ullam deserunt at atque quas nihil reiciendis. Nobis veritatis suscipit labore quia, totam in corporis accusantium! Possimus praesentium voluptatibus voluptatem, assumenda quisquam aspernatur iusto quibusdam at quam fugit facilis totam in rem dolor iste eligendi corporis dolorem enim ipsam necessitatibus ratione ullam veritatis vel! Et, distinctio labore soluta cupiditate asperiores animi nostrum maxime voluptate, blanditiis laudantium dolorem in suscipit deleniti nisi aliquam consequatur eius? Quos repellat repudiandae nam qui illo soluta, sed ipsum ipsa esse veritatis voluptate pariatur, aspernatur, placeat possimus eligendi ullam eveniet autem id perspiciatis. Quaerat placeat facere dolor facilis odio repellendus? Qui, amet obcaecati corrupti dignissimos dolorem ex quisquam fugit modi ratione dolore facere inventore dolores optio harum blanditiis enim placeat excepturi cum omnis vel unde libero quidem vero fugiat. In, eligendi esse vitae quisquam adipisci ducimus consequatur totam neque fugiat provident iure ipsum obcaecati recusandae nihil animi. Nihil reprehenderit dolores obcaecati architecto quibusdam libero fugiat consequatur facilis minus. Cumque, obcaecati omnis in quaerat illo atque beatae, iste tempora mollitia eveniet, dolores rerum quae dicta vitae sed minima dignissimos maiores? Voluptas eius, eligendi nostrum illo odit minima magnam eveniet illum similique beatae exercitationem praesentium obcaecati? Vitae reiciendis voluptatibus placeat quis, a, laudantium cumque provident incidunt earum fuga quas in quam ut blanditiis quidem dignissimos illum, laboriosam ex nihil maiores nobis. Inventore pariatur culpa iusto, molestiae, totam veniam, suscipit laboriosam soluta consequuntur cupiditate nisi quo fuga! Corrupti sunt quisquam beatae natus minus aspernatur voluptas dolores voluptate quia aut voluptatibus et doloribus maxime expedita corporis nam, animi in dicta iusto nobis, eveniet eaque perferendis sequi? Soluta explicabo odit totam eius nulla corporis consequatur quia iste consectetur delectus, esse iusto modi fuga rem reprehenderit, reiciendis officiis, perferendis similique rerum voluptatum recusandae sequi eum? Eaque laboriosam assumenda in doloribus aspernatur neque laudantium quae, officia consectetur beatae ducimus aut? Quam officia repellendus laboriosam et nesciunt eum architecto laudantium adipisci deserunt. Assumenda reprehenderit esse quis sapiente veniam vitae adipisci ea. Cum nam voluptate reprehenderit ipsa expedita provident minima laboriosam necessitatibus sed fugiat culpa molestias harum animi similique quam voluptatibus eaque aliquid, quis cumque! Voluptates dignissimos eum, voluptatum nihil ipsam possimus nulla consectetur dolorum quibusdam autem neque odio cupiditate veniam commodi modi placeat assumenda ipsum! Blanditiis, voluptatum. Tempora voluptates libero error a dolor quod corrupti suscipit ut nemo nulla facilis alias molestias asperiores laborum labore nostrum obcaecati doloribus id quidem sequi explicabo, placeat illo nisi! Suscipit tempora deleniti in sit tempore laborum impedit. Eligendi aperiam, possimus amet autem quam eaque adipisci quibusdam velit, magnam fuga iure tempore aliquam aut placeat esse dignissimos! Veniam harum libero quisquam natus id repellendus tempora reprehenderit, laudantium vitae architecto reiciendis quibusdam similique iste quo alias quas expedita fuga aliquid soluta corrupti maxime nihil maiores officia. Aspernatur modi, aut blanditiis voluptas iste delectus rem distinctio dolore placeat. Quos autem minus asperiores omnis animi dolore incidunt molestias deleniti harum aliquid quae eum, odio sed ex eveniet, quasi fugit consequatur at iusto amet blanditiis accusantium cumque! Odit ipsum sed saepe rerum voluptas. Fugit alias aliquid necessitatibus voluptatum nemo rem qui. Sint sapiente inventore vero, vitae ipsam deleniti neque voluptatibus quasi hic debitis qui numquam esse temporibus delectus minus fugiat magni deserunt. Minus laboriosam aperiam molestias fuga quas itaque quae, non unde saepe fugit eligendi totam porro repudiandae modi eum nihil vel laudantium, voluptatibus hic incidunt soluta ratione libero. Quis, adipisci autem dolor error exercitationem laborum perspiciatis perferendis aperiam asperiores, assumenda officiis expedita necessitatibus, aliquam consequatur dignissimos facere. Ad distinctio tempora nemo quas ipsum optio autem quis nihil voluptatum enim mollitia eius, sit eligendi ut, et debitis quasi vero laborum fugit ipsa hic earum itaque. Vero, ullam eligendi dicta a molestias quos qui animi, molestiae magnam, et blanditiis! Cumque, dolorem nesciunt. Ex hic temporibus quaerat maxime quam corporis culpa dicta quod tenetur amet harum enim, eaque accusamus doloribus magnam. Sequi pariatur non natus asperiores minus mollitia vel deleniti repudiandae labore consectetur autem et, dolores officia! Ullam qui laborum dolore quasi architecto harum, quo dolores maiores iusto beatae ipsum perferendis voluptatum, reiciendis unde similique omnis quod soluta cumque veritatis vero possimus temporibus ex! Voluptatum optio ipsam, sapiente inventore eius iure corporis sit pariatur vero? Excepturi eius iusto doloremque repudiandae, hic nisi id possimus quia amet dolore natus sequi molestiae illum? Laboriosam libero a quia non porro consequatur velit quos quisquam unde nobis. Modi soluta dolor debitis quam, nihil cum quibusdam pariatur sapiente nulla laborum optio quos, eius aut similique sed, ipsam non atque aperiam reprehenderit. Aperiam voluptates soluta consectetur et modi ut, dolorum sapiente animi harum nobis explicabo iure nihil. Tempore numquam recusandae culpa sit, facere molestias harum alias aut suscipit beatae praesentium accusamus nulla, quo necessitatibus eum minus maxime quidem. Laborum enim maiores quasi earum aliquam molestiae eos consequuntur amet. Iusto, maxime omnis eius, minus vero et expedita dolorem reiciendis aperiam modi dolore libero veritatis ipsa. Id, libero. Aliquid itaque odit fuga, asperiores, at impedit consectetur architecto dolor minus dolorum dolores eveniet harum maiores molestiae? Nobis minima, illum repellat omnis adipisci obcaecati. Qui sit earum quod dolorum ad, enim vel deserunt molestias tempora sapiente aspernatur maxime dicta inventore ea. Quidem dolores, autem quae officiis placeat minima iure in possimus assumenda, deserunt dolor provident, laborum necessitatibus a quam voluptatum laudantium architecto adipisci. Incidunt praesentium nihil quibusdam veritatis tempora magnam unde, est eaque, ducimus ea accusamus expedita amet modi eos? Nesciunt fugiat illo minus. Consectetur, a. Atque, incidunt vitae neque quasi architecto corporis modi id odit dolor veritatis cumque quidem? Suscipit assumenda consectetur saepe sed ipsa, voluptate ad quam ratione, molestias accusamus, nesciunt soluta molestiae ab eum optio illum itaque aliquam. Animi ex dolores nam repudiandae neque. Ipsum velit aspernatur ut, delectus harum quibusdam tenetur ipsam corrupti alias at, non voluptatibus error dolore expedita mollitia quaerat praesentium corporis id. Recusandae architecto dolor fuga quia eos non est accusamus nesciunt eius quos modi laudantium officia at totam numquam sit tempore eum, provident, earum, doloribus maiores facilis repudiandae magni minus. Eaque quam maiores facere illum distinctio. Quos vel velit in autem repellendus voluptatum, consequatur aperiam sapiente. Fuga unde eius eos, debitis laudantium est perferendis, dignissimos magni voluptates quidem nulla incidunt. Alias tempore impedit repellat nesciunt provident ex inventore aspernatur sunt, quis porro id error corporis officiis eum voluptas, quaerat, libero quibusdam assumenda cum? Excepturi dolor velit eveniet iusto unde, blanditiis delectus consequatur adipisci quo in dignissimos sed autem nobis aut minima, repudiandae voluptates laborum fugit dicta facilis voluptas quae? Sapiente rem laboriosam magnam nulla dicta corporis, vel ea laborum! Veniam aperiam facilis doloribus et illum quaerat enim eaque blanditiis nemo! Iure quas eaque adipisci provident ex nihil sint debitis.
-     </div>
-   )
- }
+const StudentsPage = () => {
+  const { id } = useParams();
+  const [form] = useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [selected, setSelected] = useState(null);
 
- export default StudentsPage
+  useEffect(() => {
+    getStudents();
+  }, [id]);
+
+  const getStudents = async () => {
+    try {
+      setLoading(true);
+      const { data } = await request.get(`/teacher/${id}/student`);
+      setStudents(data.map((student, index) => ({ ...student, key: index })));
+    } catch (error) {
+      setError(error);
+      console.error('Error fetching students:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editStudent = async (studentId) => {
+    try {
+      setSelected(studentId);
+      const { data } = await request.get(`/teacher/${id}/student/${studentId}`);
+      form.setFieldsValue(data);
+      setIsModalOpen(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const deleteStudent = (studentId) => {
+    Modal.confirm({
+      title: 'Do you want to delete ?',
+      onOk: async () => {
+        try {
+          await request.delete(`/teacher/${id}/student/${studentId}`);
+          getStudents();
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    });
+  }
+
+  const columns = [
+    {
+      title: 'Image',
+      dataIndex: 'avatar',
+      key: 'avatar',
+      render: (data) => <Image width={50} height={50} src={data} />
+    },
+    {
+      title: 'Firstname',
+      dataIndex: 'firstName',
+      key: 'firstName',
+    },
+    {
+      title: 'Lastname',
+      dataIndex: 'lastName',
+      key: 'lastName',
+    },
+    {
+      title: 'Phone number',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber',
+    },
+    {
+      title: 'Is work',
+      dataIndex: 'isWork',
+      key: 'isWork',
+      render: (data) => data ? "Yes" : "No"
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      dataIndex: "id",
+      render: (id) => (
+        <Space size="middle">
+          <Button type="primary" onClick={() => editStudent(id)}>Edit</Button>
+          <Button type="primary" danger onClick={() => deleteStudent(id)}>Delete</Button>
+        </Space>
+      ),
+    },
+  ];
+
+  const showModal = () => {
+    setSelected(null);
+    setIsModalOpen(true);
+    form.resetFields();
+  };
+
+  const handleOk = async () => {
+    try {
+      const values = await form.validateFields();
+      if (selected === null) {
+        await request.post(`/teacher/${id}/student`, values);
+      } else {
+        await request.put(`/teacher/${id}/student/${selected}`, values);
+      }
+      getStudents();
+      setIsModalOpen(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <Fragment>
+      <Table
+        title={() => (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h1>Students ({students.length})</h1>
+            <Button type="dashed" onClick={showModal}>Add Student</Button>
+          </div>
+        )}
+        loading={loading}
+        dataSource={students}
+        columns={columns}
+      />
+      <Modal
+        title="Student data"
+        open={isModalOpen}
+        onOk={handleOk}
+        okText="Add student"
+        onCancel={closeModal}
+      >
+        <Form
+          form={form}
+          name="student"
+          labelCol={{ span: 24 }}
+          wrapperCol={{ span: 24 }}
+          initialValues={{ remember: true }}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Image url"
+            name="avatar"
+            rules={[{ required: true, message: 'Please input the image URL!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="First name"
+            name="firstName"
+            rules={[{ required: true, message: 'Please input the first name!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Last name"
+            name="lastName"
+            rules={[{ required: true, message: 'Please input the last name!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Phone number"
+            name="phoneNumber"
+            rules={[{ required: true, message: 'Please input the phone number!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="isWork"
+            valuePropName="checked"
+            wrapperCol={{ span: 24 }}
+          >
+            <Checkbox>Is work</Checkbox>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </Fragment>
+  );
+};
+
+export default StudentsPage;

@@ -27,8 +27,8 @@ function App() {
         {
         islogin ?
          <Route  element={<AdminLayout setIsLogin={setIsLogin}/>}>
-         <Route path="teachers" element={<TeachersPage />} />
-         <Route path="students" element={<StudentsPage />} />
+         <Route path="/teachers" element={<TeachersPage />} />
+         <Route path={`/teacher/:id/student`} element={<StudentsPage />} />
        </Route>
        :
        null

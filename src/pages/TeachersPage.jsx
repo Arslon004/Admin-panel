@@ -2,6 +2,7 @@ import { Button, Flex, Image, Modal, Space, Table, Checkbox, Form, Input } from 
 import { Fragment, useEffect, useState } from "react"
 import request from "../server";
 import { useForm } from "antd/es/form/Form";
+import { Link } from "react-router-dom";
 
 const TeachersPage = () => {
   const [teachers, setTeachers] = useState([]);
@@ -94,6 +95,7 @@ const TeachersPage = () => {
         <Space size="middle">
           <Button type="primary" onClick={() => editTeacher(id)}>Edit</Button>
           <Button type="primary" onClick={() => deleteTeacher(id)} danger>Delete</Button>
+          <Link to={`/teacher/${id}/student`}>See students</Link>
         </Space>
       ),
     },
@@ -117,8 +119,8 @@ const TeachersPage = () => {
       setIsModalOpen(false);
     } catch (err) {
       console.log(err);
-    }finally{
-    setIsModalLoading(false)
+    } finally {
+      setIsModalLoading(false)
     }
   };
   const closeModal = () => {
@@ -211,7 +213,7 @@ const TeachersPage = () => {
 
 
           <Form.Item
-            name="remember"
+            name="isMarried"
             valuePropName="checked"
             wrapperCol={{
               span: 24,
