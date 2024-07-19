@@ -5,6 +5,7 @@ import loginSchema from '../schemas/LoginSchema';
 import axios from 'axios';
 import { TOKEN } from '../constants';
 import PropTypes from "prop-types";
+
 const LoginPage = ({setIsLogin}) => {
 
   let navigate = useNavigate();
@@ -90,6 +91,6 @@ const LoginPage = ({setIsLogin}) => {
 };
 
 LoginPage.propTypes={
-  setIsLogin:PropTypes.func
+  setIsLogin:PropTypes.func,
 }
 export default LoginPage;

@@ -8,3 +8,6 @@ html{
 *,*::before,*::after{
   box-sizing: inherit;
 }
+.ant-table-title{
+  padding: 0 !important;
+}

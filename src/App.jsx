@@ -2,14 +2,21 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import LoginPage from "./pages/LoginPage"
 import TeachersPage from "./pages/TeachersPage"
 import StudentsPage from "./pages/StudentsPage"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import NotFoundPage from "./pages/NotFoundPage"
 import { TOKEN } from "./constants"
 import AdminLayout from "./layout/AdminLayout"
 
 function App() {
 
-    const [islogin,setIsLogin]=useState(localStorage.getItem(TOKEN) ? true : false);
+    const [islogin,setIsLogin]=useState( false);
+
+    useEffect(() => {
+      const token = localStorage.getItem(TOKEN);
+      if (token) {
+        setIsLogin(true);
+      }
+    }, []);
 
   return (
     <BrowserRouter>
@@ -19,7 +26,7 @@ function App() {
 
         {
         islogin ?
-         <Route  element={<AdminLayout/>}>
+         <Route  element={<AdminLayout setIsLogin={setIsLogin}/>}>
          <Route path="teachers" element={<TeachersPage />} />
          <Route path="students" element={<StudentsPage />} />
        </Route>
