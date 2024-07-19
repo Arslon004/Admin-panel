@@ -1,40 +1,74 @@
-import { Button, Flex, Image, Modal, Space, Table } from "antd";
+import { Button, Flex, Image, Modal, Space, Table, Checkbox, Form, Input } from "antd";
 import { Fragment, useEffect, useState } from "react"
 import request from "../server";
+import { useForm } from "antd/es/form/Form";
 
 const TeachersPage = () => {
-  const [teachers,setTeachers]=useState([]);
-  const [loading,setLoading]=useState(false);
-  const [error,setError]=useState(null);
+  const [teachers, setTeachers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [selected, setSelected] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalLoading, setIsModalLoading] = useState(false);
+  const [form] = useForm();
 
-  useEffect(()=>{
-    try{
+  useEffect(() => {
+    getTeachers()
+
+  }, []);
+
+  const getTeachers = async () => {
+    try {
       setLoading(true);
-      const getTeachers = async ()=>{
-        let {data}=await request.get('teacher');
-        setTeachers(data.map((teacher,index)=>({...teacher,key:index})));
-      }
-      getTeachers()
-    }catch(err){
+      let { data } = await request.get('teacher');
+      setTeachers(data.map((teacher, index) => ({ ...teacher, key: index })));
+    }
+    catch (err) {
       console.log(err);
       setError(err);
-    }finally{
+    } finally {
       setLoading(false);
     }
-  },[])
+  }
+
+  const editTeacher = async (id) => {
+    try {
+      setSelected(id)
+      setIsModalOpen(true);
+      let { data } = await request.get(`teacher/${id}`);
+      form.setFieldsValue(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const deleteTeacher = (id) => {
+
+    Modal.confirm({
+      title: 'Do you want to delete ?',
+      onOk: async () => {
+        try {
+          await request.delete(`teacher/${id}`);
+          getTeachers();
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    });
+
+  }
+
   const columns = [
     {
       title: 'Image',
       dataIndex: 'avatar',
       key: 'avatar',
-      render:(data)=>(<Image width={50} height={50} src={data}/>)
+      render: (data) => (<Image width={50} height={50} src={data} />)
     },
     {
       title: 'Firstname',
       dataIndex: 'firstName',
       key: 'firstName',
-      render: (text) => <a>{text}</a>,
     },
     {
       title: 'Lastname',
@@ -50,25 +84,42 @@ const TeachersPage = () => {
       title: 'Is Married',
       dataIndex: 'isMarried',
       key: 'isMarried',
-      render:(data)=>(data ? "Yes" : "No")
+      render: (data) => (data ? "Yes" : "No")
     },
     {
       title: 'Action',
       key: 'action',
-      render: () => (
+      dataIndex: "id",
+      render: (id) => (
         <Space size="middle">
-         <Button type="primary">Edit</Button>
-         <Button type="primary" danger>Delete</Button>
+          <Button type="primary" onClick={() => editTeacher(id)}>Edit</Button>
+          <Button type="primary" onClick={() => deleteTeacher(id)} danger>Delete</Button>
         </Space>
       ),
     },
   ];
 
   const showModal = () => {
+    form.resetFields();
     setIsModalOpen(true);
+    setSelected(null);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const handleOk = async () => {
+    try {
+      setIsModalLoading(true)
+      let values = await form.validateFields();
+      if (selected === null) {
+        await request.post('teacher', values);
+      } else {
+        await request.put(`teacher/${selected}`, values);
+      }
+      getTeachers();
+      setIsModalOpen(false);
+    } catch (err) {
+      console.log(err);
+    }finally{
+    setIsModalLoading(false)
+    }
   };
   const closeModal = () => {
     setIsModalOpen(false);
@@ -77,22 +128,102 @@ const TeachersPage = () => {
   return (
     <Fragment>
       <Table
-      title={()=>(
-        <Flex justify="space-between" align="center">
-          <h1 >Teachers</h1>
-          <Button type="dashed" onClick={showModal}>Add teacher</Button>
-        </Flex>
-      )}
-       loading={loading} dataSource={teachers} columns={columns} />;
-        <Modal
+        title={() => (
+          <Flex justify="space-between" align="center">
+            <h1 >Teachers ({teachers.length})</h1>
+            <Button type="dashed" onClick={showModal}>Add teacher</Button>
+          </Flex>
+        )}
+        loading={loading} dataSource={teachers} columns={columns} />;
+      <Modal
         title="Teacher data"
-         open={isModalOpen}
-          onOk={handleOk}
-          okText="Add teacher"
-           onCancel={closeModal}>
+        open={isModalOpen}
+        onOk={handleOk}
+        confirmLoading={isModalLoading}
+        okText={selected === null ? "Add teacher" : "Save teacher"}
+        onCancel={closeModal}>
+
+        <Form
+          form={form}
+          name="teacher"
+          labelCol={{
+            span: 24,
+          }}
+          wrapperCol={{
+            span: 24,
+          }}
+          initialValues={{
+            remember: true,
+          }}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Image"
+            name="avatar"
+            rules={[
+              {
+                required: true,
+                message: 'Please input fill!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Firstname"
+            name="firstName"
+            rules={[
+              {
+                required: true,
+                message: 'Please input fill!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Lastname"
+            name="lastName"
+            rules={[
+              {
+                required: true,
+                message: 'Please input fill!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Phone number"
+            name="phoneNumber"
+            rules={[
+              {
+                required: true,
+                message: 'Please input fill!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+
+          <Form.Item
+            name="remember"
+            valuePropName="checked"
+            wrapperCol={{
+              span: 24,
+            }}
+          >
+            <Checkbox>Is married</Checkbox>
+          </Form.Item>
+        </Form>
+
 
       </Modal>
-    </Fragment>
+    </Fragment >
   )
 }
 
