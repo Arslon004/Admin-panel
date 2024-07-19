@@ -166,7 +166,7 @@ const StudentsPage = () => {
         title="Student data"
         open={isModalOpen}
         onOk={handleOk}
-        okText="Add student"
+        okText={selectedStudentId === null ? "Add student" : "Save student"}
         onCancel={closeModal}
       >
         <Form
